@@ -9,16 +9,21 @@ import {
     ImageBackground,
     ScrollView,
     Dimensions,
+    Image,
 } from "react-native";
+
 import TypingEffectText from "react-native-typing-animation-effect";
+import AnimatedLoader from "react-native-animated-loader";
 
 const { height } = Dimensions.get("window");
 
 export default function App() {
+    const [loading, setLoading] = useState(false);
     const [hideComingSoon, setHideComingSoon] = useState(false);
     const [secondPageTitle, setSecondPageTitle] = useState(
-        "Discover Your Personality."
+        "Discover your personality."
     );
+    const [persType, setPersType] = useState("");
     const [handle, setHandle] = useState("");
     const scrollViewRef = useRef(null);
     const handleExploreNow = () => {
@@ -29,7 +34,15 @@ export default function App() {
         });
     };
     const handlePress = () => {
+        setLoading(true);
+        setTimeout(
+            function () {
+                setLoading(false);
+            }.bind(this),
+            3000
+        );
         setHideComingSoon(true);
+        setPersType("INTJ");
     };
     return (
         <ImageBackground
@@ -49,8 +62,10 @@ export default function App() {
 
                         <Text style={styles.title}>Find yourself outside.</Text>
                         <Text style={styles.body}>
-                            Book unique camping experiences on over 300,000
-                            campsites, cabins, RV parks, public parks and more.
+                            Myers-Briggs Type Indicator (MBTI) is an
+                            introspective self-report questionnaire indicating
+                            differing psychological preferences in how people
+                            perceive the world and make decisions.
                         </Text>
                         <Pressable
                             style={styles.exploreBtn}
@@ -62,14 +77,14 @@ export default function App() {
                         </Pressable>
                     </View>
                 </View>
-                <View
-                    style={{
-                        height: height,
-                        marginHorizontal: 20,
-                        paddingTop: "80%",
-                        paddingBottom: "30%",
-                    }}
-                >
+                <View style={styles.secondContainer}>
+                    <AnimatedLoader
+                        visible={loading}
+                        overlayColor="rgba(255,255,255,0.75)"
+                        animationStyle={styles.lottie}
+                        speed={1}
+                    ></AnimatedLoader>
+
                     <View style={{ marginStart: 15, marginBottom: 22 }}>
                         <TypingEffectText
                             style={{
@@ -110,7 +125,6 @@ export default function App() {
                         {!hideComingSoon && (
                             <TextInput
                                 style={styles.seconadryInput}
-                                onChangeText={setHandle}
                                 value={handle}
                                 placeholder="Chat with chatgpt..."
                                 placeholderTextColor="#A0A0A0"
@@ -120,7 +134,22 @@ export default function App() {
                             />
                         )}
 
-                        {hideComingSoon && <View></View>}
+                        {hideComingSoon && persType != "" && (
+                            <View
+                                style={{
+                                    width: "100%",
+                                    alignItems: "center",
+                                }}
+                            >
+                                <Image
+                                    style={styles.persImage}
+                                    source={{
+                                        uri: "https://media.giphy.com/media/URva3HbIqwn550FeOc/giphy.gif",
+                                    }}
+                                />
+                                <Text style={styles.text}>{persType}</Text>
+                            </View>
+                        )}
                     </ImageBackground>
                 </View>
             </ScrollView>
@@ -211,5 +240,20 @@ const styles = StyleSheet.create({
         fontSize: 16,
         color: "white",
         marginBottom: 15,
+    },
+    secondContainer: {
+        height: height,
+        marginHorizontal: 20,
+        paddingTop: "80%",
+        paddingBottom: "30%",
+        justifyContent: "center",
+    },
+    persImage: {
+        width: 150,
+        height: 150,
+        resizeMode: "contain",
+        marginBottom: 20,
+        borderRadius: 20,
+        overflow: "hidden",
     },
 });
