@@ -38,11 +38,11 @@ export default function App() {
         setTimeout(
             function () {
                 setLoading(false);
+                setHideComingSoon(true);
+                setPersType("ESFP");
             }.bind(this),
             3000
         );
-        setHideComingSoon(true);
-        setPersType("INTJ");
     };
     return (
         <ImageBackground
@@ -113,7 +113,7 @@ export default function App() {
                         />
                         <Pressable style={styles.button} onPress={handlePress}>
                             <Text style={styles.exploreBtnTxt}>
-                                Find Myself.
+                                Find yourself
                             </Text>
                         </Pressable>
 
@@ -125,7 +125,7 @@ export default function App() {
                         {!hideComingSoon && (
                             <TextInput
                                 style={styles.seconadryInput}
-                                value={handle}
+                                // value={handle}
                                 placeholder="Chat with chatgpt..."
                                 placeholderTextColor="#A0A0A0"
                                 editable={false}
@@ -144,7 +144,7 @@ export default function App() {
                                 <Image
                                     style={styles.persImage}
                                     source={{
-                                        uri: "https://media.giphy.com/media/URva3HbIqwn550FeOc/giphy.gif",
+                                        uri: "https://media.giphy.com/media/Q7WaWuYUVXWaD807L9/giphy.gif",
                                     }}
                                 />
                                 <Text style={styles.text}>{persType}</Text>
